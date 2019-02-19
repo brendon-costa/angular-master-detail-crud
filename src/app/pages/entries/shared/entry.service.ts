@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from "@angular/common/http"
 import { observable, throwError, Observable, Observer } from "rxjs"
 import { map, catchError, flatMap } from "rxjs/operators";
-import {Entry} from "./entry.model"
+import {Entry} from "../shared/entry.model"
 
 @Injectable({
   providedIn: 'root'
@@ -59,8 +59,12 @@ export class EntryService {
   // private methods
 
   private jsonDataToEntries(jsonData: any[]) : Entry[]{
-    const entries: Entry[] = [];
-    jsonData.forEach(element => entries.push(element as Entry));
+    const entries: Entry [] = [];
+    jsonData.forEach(element => {
+      const entry = Object.assign(new Entry(), element);
+      entries.push(entry);
+    });
+
     return entries;
   }
   
@@ -69,8 +73,8 @@ export class EntryService {
     return throwError(error);
   }
 
-  private jsonDataToEntry(jsonData: any[]) : Entry{
-    return jsonData as Entry;
+  private jsonDataToEntry(jsonData: any) : Entry{
+    return Object.assign(new Entry(), jsonData);
   }
 
 }
