@@ -8,7 +8,7 @@ export class Entry{
         public type?: string,
         public amount?: string,
         public date?: string,
-        public paid?: any,
+        public paid?: boolean,
         public categoryId?: number,
         public category?: Category,
     ){}
