@@ -19,7 +19,7 @@
     </h1>
   </div>
   <div class="col-md-3">
-    <a routerLink="/Entries" class="btn btn-light float-right">
+    <a routerLink="/entries" class="btn btn-light float-right">
       << Voltar
     </a>
   </div>
@@ -28,7 +28,7 @@
 <form [formGroup]="entryForm" (submit)="submitForm()">
   <div class="card">
     <div class="card-header">
-      Informações sobre a categoria
+      Informações sobre o Lançamento
     </div>
     <div class="card-body">
       <div class="form-row">
@@ -54,12 +54,12 @@
 
   <div class="alert alert-danger mt-4" *ngIf="serverErrorMessages">
     <strong>Erro no servidor:</strong>
-    <ul *ngFor="let error of serverErrorMessages">
-      <li>{{error}}}</li>
+    <ul>
+      <li *ngFor="let error of serverErrorMessages">{{error}}}</li>
     </ul>
   </div>
 
-  <button [disabled]="submittingForm || entryForm.invalid" class="btn btn-primary btn-lg mt-3 float-right">
+  <button type="submit" [disabled]="submittingForm || entryForm.invalid" class="btn btn-primary btn-lg mt-3 float-right">
     Salvar
   </button>
 </form>

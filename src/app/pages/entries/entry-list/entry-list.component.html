@@ -35,11 +35,11 @@
     <tr *ngFor="let entry of entries">
       <td>
         <strong>{{entry.name}}</strong><br>
-        <small class="text-success">{{entry.data}}</small><br>
+        <small class="text-success">{{entry.date}}</small><br>
         <small *ngIf="entry.description">{{entry.description}}</small>
       </td>
       <td>
-        {{entry.entry.name}}
+        {{entry.category.name}}
       </td>
       <td class="text-right">
         <strong [class.text-sucess]="entry.type == 'revenue'" [class.text-danger]="entry.type == 'expense'">
