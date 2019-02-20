@@ -3,6 +3,7 @@ import { HttpClient, HttpHeaders } from "@angular/common/http"
 import { observable, throwError, Observable, Observer } from "rxjs"
 import { map, catchError, flatMap } from "rxjs/operators";
 import {Entry} from "../shared/entry.model"
+import { CategoryService } from '../../categories/shared/category.service';
 
 @Injectable({
   providedIn: 'root'
@@ -12,7 +13,10 @@ export class EntryService {
 
   private apiPath: string = "api/entries";
 
-  constructor(private http: HttpClient) { }
+  constructor(
+    private http: HttpClient,
+    private categoryService: CategoryService,
+    ) { }
 
   getAll(): Observable<Entry[]>{
     return this.http.get(this.apiPath).pipe(
@@ -31,19 +35,35 @@ export class EntryService {
   }
 
   create(entry: Entry): Observable<Entry>{
-    return this.http.post(this.apiPath, entry).pipe(
-      catchError(this.handleError),
-      map(this.jsonDataToEntry)
+    return this.categoryService.getById(entry.categoryId).pipe(
+      flatMap(category => {
+        entry.category = category;
+
+        //Em caso de controle do que é retornado na api, é necessario somente esse return
+        return this.http.post(this.apiPath, entry).pipe(
+          catchError(this.handleError),
+          map(this.jsonDataToEntry)
+        )
+        //end
+      })
     )
   }
 
   update(entry: Entry): Observable<Entry>{
     const url = `${this.apiPath}/${entry.id}`;
 
-    return this.http.put(url, entry).pipe(
-      catchError(this.handleError),
-      map(() => entry)
-      //em caso de servidor normal geralmente retorna um data de alteração
+    return this.categoryService.getById(entry.categoryId).pipe(
+      flatMap(category => {
+        entry.category = category;
+
+        //Em caso de controle do que é retornado na api, é necessario somente esse return
+        return this.http.put(url, entry).pipe(
+          catchError(this.handleError),
+          map(() => entry)
+          //em caso de servidor normal geralmente retorna um data de alteração
+        )
+        //end
+      })
     )
   }
 
