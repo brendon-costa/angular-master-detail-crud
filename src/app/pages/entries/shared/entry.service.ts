@@ -12,7 +12,7 @@ import { throwError, Observable } from 'rxjs';
 export class EntryService extends BaseResourceService<Entry>{
 
   constructor(protected injector: Injector, protected categoryService: CategoryService){
-    super("api/entries", injector);
+    super("api/entries", injector, Entry.fromJson);
   }
 
   create(entry: Entry): Observable<Entry>{
@@ -33,23 +33,6 @@ export class EntryService extends BaseResourceService<Entry>{
         return super.update(entry);
       })
     )
-  }
-
-  // private methods
-
-  protected jsonDataToEntries(jsonData: any[]) : Entry[]{
-    const entries: Entry [] = [];
-    jsonData.forEach(element => {
-      const entry = Object.assign(new Entry(), element);
-      entries.push(entry);
-    });
-
-    return entries;
-  }
-  
-  protected handleError(error: any) : Observable<any>{
-    console.log("Erro na requisição => ", error)
-    return throwError(error);
   }
 
 }
