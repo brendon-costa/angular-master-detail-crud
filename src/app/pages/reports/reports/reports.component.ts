@@ -56,13 +56,11 @@ export class ReportsComponent implements OnInit {
       this.entryService.getByMonthAndYear(month, year).subscribe(this.setValues.bind(this))
   }
 
-
   private setValues(entries: Entry[]){
     this.entries = entries;
     this.calculateBalance();
     this.setChartData();
   }
-
 
   private calculateBalance(){
     let expenseTotal = 0;
@@ -80,12 +78,10 @@ export class ReportsComponent implements OnInit {
     this.balance = currencyFormatter.format(revenueTotal - expenseTotal, { code: 'BRL'});
   }
 
-
   private setChartData() {
     this.revenueChartData = this.getChartData('revenue', 'Gráfico de Receitas', '#9CCC65');
     this.expenseChartData = this.getChartData('expense', 'Gráfico de Despesas', '#e03131');
   }
-
 
   private getChartData(entryType: string, title: string, color: string) {
     const chartData = [];
